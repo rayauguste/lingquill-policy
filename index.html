@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privacy Policy — Seliquill</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+        line-height: 1.6;
+        max-width: 42rem;
+        margin: 0 auto;
+        padding: 1.5rem 1.25rem 3rem;
+        color: #1a1a1a;
+        background: #fafafa;
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          color: #e8e8e8;
+          background: #121212;
+        }
+        a {
+          color: #7ec8ff;
+        }
+      }
+      h1 {
+        font-size: 1.5rem;
+        line-height: 1.25;
+        margin-top: 0;
+      }
+      h2 {
+        font-size: 1.15rem;
+        margin-top: 2rem;
+      }
+      h3 {
+        font-size: 1rem;
+        margin-top: 1.25rem;
+      }
+      .meta {
+        color: #555;
+        font-size: 0.95rem;
+      }
+      @media (prefers-color-scheme: dark) {
+        .meta {
+          color: #aaa;
+        }
+      }
+      ul {
+        padding-left: 1.25rem;
+      }
+      code {
+        font-size: 0.9em;
+      }
+      hr {
+        border: none;
+        border-top: 1px solid #ccc;
+        margin: 2rem 0;
+      }
+      @media (prefers-color-scheme: dark) {
+        hr {
+          border-top-color: #444;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Privacy Policy — Seliquill (Chrome Extension)</h1>
+    <p class="meta"><strong>Last updated:</strong> March 20, 2026</p>
+
+    <p>
+      This policy describes how the <strong>Seliquill</strong> browser extension (“the Extension”) handles
+      information when you install and use it. The Extension is provided by <strong>Ray Auguste</strong> (“we”,
+      “us”).
+    </p>
+    <p>
+      <strong>Contact:</strong>
+      <a href="mailto:raekwon322@gmail.com">raekwon322@gmail.com</a>
+    </p>
+
+    <hr />
+
+    <h2>Summary</h2>
+    <ul>
+      <li>The Extension <strong>does not sell</strong> your personal information.</li>
+      <li>
+        Your <strong>Anthropic (Claude) API key</strong> is stored <strong>only on your device</strong> in Chrome’s
+        local storage. We do not receive it on our servers (this project has <strong>no</strong> publisher-operated
+        backend for the Extension).
+      </li>
+      <li>
+        When you use translation or daily-practice features, <strong>text you select or prompts derived from your use</strong>
+        are sent <strong>from your browser</strong> to <strong>Anthropic’s API</strong> using <strong>your</strong> API
+        key, subject to
+        <a href="https://www.anthropic.com/legal/privacy" rel="noopener noreferrer">Anthropic’s policies</a> and your
+        agreement with Anthropic.
+      </li>
+      <li>
+        <strong>Saved vocabulary, progress, and settings</strong> stay <strong>on your device</strong> unless you use
+        browser sync/backup features outside this Extension’s control.
+      </li>
+    </ul>
+
+    <hr />
+
+    <h2>Information the Extension processes</h2>
+
+    <h3>1. Settings (stored locally)</h3>
+    <p>Stored in <code>chrome.storage.local</code> on your device, including:</p>
+    <ul>
+      <li>Extension on/off preference</li>
+      <li>Learning language selection</li>
+      <li>Your <strong>Anthropic API key</strong> (if you choose to enter one)</li>
+    </ul>
+    <p>
+      The API key is used <strong>only</strong> to authenticate requests from your browser to
+      <code>https://api.anthropic.com</code> as implemented in the Extension. It is <strong>not</strong> transmitted to
+      us.
+    </p>
+
+    <h3>2. Text you select on web pages</h3>
+    <p>
+      When the Extension is enabled and you select text on a webpage, that <strong>selected text</strong> may be sent
+      <strong>from your device</strong> to <strong>Anthropic</strong> to generate translations, readings, and grammar
+      explanations. We do not operate the servers that process that request; <strong>Anthropic</strong> does.
+    </p>
+    <p>
+      <strong>You should not select highly sensitive text</strong> (passwords, government IDs, private medical or
+      financial details, etc.) if you are not comfortable with that content being included in an API request to
+      Anthropic under your account.
+    </p>
+
+    <h3>3. Learning data (stored locally)</h3>
+    <p>The Extension may store, per learning language:</p>
+    <ul>
+      <li><strong>Saved vocabulary items</strong> (e.g. translations, notes you chose to save)</li>
+      <li><strong>Daily practice</strong> suggestions and related metadata (e.g. recent prompts to reduce repetition)</li>
+      <li><strong>UI preferences</strong> (e.g. which sections you expanded in the popup)</li>
+    </ul>
+    <p>
+      This data remains on your device in Chrome storage unless you remove the Extension or clear site/extension data.
+    </p>
+
+    <h3>4. Clipboard (optional, on your action)</h3>
+    <p>
+      If you use <strong>Copy</strong> in the Extension UI, the Extension may write content to your
+      <strong>system clipboard</strong> using the browser’s clipboard APIs or a fallback copy method. That happens
+      <strong>locally</strong> on your device.
+    </p>
+
+    <hr />
+
+    <h2>Third-party services</h2>
+
+    <h3>Anthropic (Claude API)</h3>
+    <p>
+      The Extension sends requests to <strong>Anthropic</strong> at <code>api.anthropic.com</code> when you use features
+      that require AI output. Processing is governed by <strong>Anthropic’s</strong> terms and privacy policy. You provide
+      your own API key; usage and retention on Anthropic’s side depend on your Anthropic account and their documentation.
+    </p>
+
+    <h3>Websites you visit</h3>
+    <p>
+      The Extension includes <strong>content scripts</strong> that run on pages you browse so it can respond to text
+      selection. It <strong>does not</strong> change our access to your data—we do not run infrastructure that receives
+      your browsing data. Page content is processed <strong>in your browser</strong> except when <strong>you</strong>
+      trigger a feature that sends <strong>selected text</strong> to Anthropic as described above.
+    </p>
+
+    <hr />
+
+    <h2>Data retention and deletion</h2>
+    <ul>
+      <li>
+        Data stored by the Extension in <strong>Chrome local storage</strong> persists until you
+        <strong>uninstall</strong> the Extension, <strong>clear</strong> extension data, or use Chrome features that remove
+        that storage.
+      </li>
+      <li>
+        To stop sending text to Anthropic, <strong>disable</strong> the Extension or <strong>remove</strong> your API key
+        in Settings.
+      </li>
+    </ul>
+
+    <hr />
+
+    <h2>Children’s privacy</h2>
+    <p>
+      The Extension is not aimed at children under 13 (or the minimum age in your jurisdiction). Parents and guardians
+      decide whether minors should use it and should supervise browser use (including any API key stored on the device).
+    </p>
+    <p>
+      This Extension <strong>does not run a signup service or hosted accounts</strong>—there is no central database for
+      us to search or erase. To stop use or remove locally stored data, <strong>uninstall the Extension</strong> or
+      <strong>clear extension data</strong> in Chrome. If a minor’s text was sent to <strong>Anthropic</strong> using
+      your API key, that is handled under <strong>your</strong> Anthropic account and their policies, not by us.
+    </p>
+
+    <hr />
+
+    <h2>International users</h2>
+    <p>
+      If you use the Extension from outside your home country, your information may be processed by
+      <strong>Anthropic</strong> in accordance with their policies and your use of their service.
+    </p>
+
+    <hr />
+
+    <h2>Changes to this policy</h2>
+    <p>
+      We may update this policy when the Extension changes. The <strong>“Last updated”</strong> date at the top will change
+      when we do. Continued use after changes means you accept the updated policy.
+    </p>
+
+    <hr />
+
+    <h2>Disclaimer</h2>
+    <p>
+      This document is provided to help you describe the Extension’s behavior accurately. It is <strong>not</strong>
+      legal advice. For compliance questions, consult a qualified attorney.
+    </p>
+  </body>
+</html>
