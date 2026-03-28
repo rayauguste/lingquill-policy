@@ -68,12 +68,12 @@
   </head>
   <body>
     <h1>Privacy Policy — Lingquill (Chrome Extension)</h1>
-    <p class="meta"><strong>Last updated:</strong> March 20, 2026</p>
+    <p class="meta"><strong>Last updated:</strong> March 27, 2026</p>
 
     <p>
-      This policy describes how the <strong>Lingquill</strong> browser extension (“the Extension”) handles
-      information when you install and use it. The Extension is provided by <strong>Ray Auguste</strong> (“we”,
-      “us”).
+      This policy describes how the <strong>Lingquill</strong> Chrome extension (“the Extension”) and the
+      <strong>Lingquill API</strong> (the online service the Extension uses for sign-in, subscriptions, and AI
+      features) handle information. The Extension is provided by <strong>Ray Auguste</strong> (“we”, “us”).
     </p>
     <p>
       <strong>Contact:</strong>
@@ -84,142 +84,209 @@
 
     <h2>Summary</h2>
     <ul>
-      <li>The Extension <strong>does not sell</strong> your personal information.</li>
+      <li>We <strong>do not sell</strong> your personal information.</li>
       <li>
-        Your <strong>Anthropic (Claude) API key</strong> is stored <strong>only on your device</strong> in Chrome’s
-        local storage. We do not receive it on our servers (this project has <strong>no</strong> publisher-operated
-        backend for the Extension).
+        <strong>Sign-in</strong> uses <strong>Google</strong> (via Chrome’s identity APIs). We receive your Google
+        account identifier and email to create your Lingquill account, subject to
+        <a href="https://policies.google.com/privacy" rel="noopener noreferrer">Google’s policies</a>.
       </li>
       <li>
-        When you use translation or daily-practice features, <strong>text you select or prompts derived from your use</strong>
-        are sent <strong>from your browser</strong> to <strong>Anthropic’s API</strong> using <strong>your</strong> API
-        key, subject to
-        <a href="https://www.anthropic.com/legal/privacy" rel="noopener noreferrer">Anthropic’s policies</a> and your
-        agreement with Anthropic.
+        <strong>AI translation and tutoring</strong>: when you use those features, <strong>text you select or send
+        in the Extension</strong> is sent from your browser to <strong>our API servers</strong>, which forward the
+        request to <strong>Anthropic</strong> (Claude). Processing on Anthropic’s side is governed by
+        <a href="https://www.anthropic.com/legal/privacy" rel="noopener noreferrer">Anthropic’s privacy policy</a>.
+        The Extension does <strong>not</strong> use your own Anthropic API key; API access is provided through our
+        service for subscribed users.
       </li>
       <li>
-        <strong>Saved vocabulary, progress, and settings</strong> stay <strong>on your device</strong> unless you use
-        browser sync/backup features outside this Extension’s control.
+        <strong>Subscriptions</strong> are handled by <strong>Stripe</strong>. We store subscription status and
+        Stripe identifiers needed to manage billing, as described below.
+      </li>
+      <li>
+        <strong>Vocabulary, streaks, practice history, and most settings</strong> are stored <strong>locally</strong> in
+        Chrome on your device unless you remove the Extension or clear extension data.
       </li>
     </ul>
 
     <hr />
 
-    <h2>Information the Extension processes</h2>
-
-    <h3>1. Settings (stored locally)</h3>
-    <p>Stored in <code>chrome.storage.local</code> on your device, including:</p>
+    <h2>Permissions the Extension uses</h2>
     <ul>
-      <li>Extension on/off preference</li>
-      <li>Learning language selection</li>
-      <li>Your <strong>Anthropic API key</strong> (if you choose to enter one)</li>
+      <li>
+        <strong>storage</strong> — saves settings, your session token, learning data, and UI preferences on your
+        device.
+      </li>
+      <li>
+        <strong>identity</strong> — lets you sign in with Google through Chrome (OAuth). A short-lived Google access
+        token may be sent to our API to verify your account.
+      </li>
+      <li>
+        <strong>Host access</strong> — the Extension is allowed to call our Lingquill API over HTTPS (the API base URL
+        shipped with the Extension, e.g. our hosted domain on Railway). It does not need broad read access to
+        arbitrary third-party APIs beyond what your browser already does for normal browsing.
+      </li>
+      <li>
+        <strong>Content scripts</strong> run on web pages you open so Lingquill can respond to text selection,
+        captions (where supported), and show the on-page UI. Page content is handled in your browser unless you
+        trigger a feature that sends text to our API as described below.
+      </li>
+    </ul>
+
+    <hr />
+
+    <h2>Information we process</h2>
+
+    <h3>1. Account and sign-in (Lingquill API + Google)</h3>
+    <p>When you choose to sign in:</p>
+    <ul>
+      <li>Chrome obtains a Google OAuth token using the scopes declared in the Extension manifest (email and profile).</li>
+      <li>
+        The Extension sends that token to our API (<code>POST /auth/google</code>). We validate it with Google’s
+        userinfo endpoint and create or update a user record.
+      </li>
+      <li>
+        We issue a <strong>Lingquill session token</strong> (JWT) returned to the Extension. It is stored in
+        <code>chrome.storage.local</code> on your device along with your email (for display in the UI).
+      </li>
     </ul>
     <p>
-      The API key is used <strong>only</strong> to authenticate requests from your browser to
-      <code>https://api.anthropic.com</code> as implemented in the Extension. It is <strong>not</strong> transmitted to
-      us.
+      <strong>Server-side account data</strong> (in our database) typically includes: internal user id, Google subject
+      identifier (<code>sub</code>), email, account creation time, and subscription fields linked to Stripe (customer
+      id, subscription id, status, current period end). We use this to authenticate you, check subscription status, and
+      operate billing.
     </p>
 
-    <h3>2. Text you select on web pages</h3>
+    <h3>2. AI features (text sent to our API and Anthropic)</h3>
     <p>
-      When the Extension is enabled and you select text on a webpage, that <strong>selected text</strong> may be sent
-      <strong>from your device</strong> to <strong>Anthropic</strong> to generate translations, readings, and grammar
-      explanations. We do not operate the servers that process that request; <strong>Anthropic</strong> does.
+      When you translate selected text, use daily practice, caption-related translation, or chat-style tutoring in the
+      Extension, the Extension sends a structured request (including the relevant text and prompts) to our API
+      (<code>POST /api/claude/messages</code>) with your session token. Our server checks that your account is
+      entitled (subscribed or otherwise allowed), then forwards the request body to
+      <strong>Anthropic’s Messages API</strong> using <strong>our</strong> Anthropic API credentials.
     </p>
     <p>
-      <strong>You should not select highly sensitive text</strong> (passwords, government IDs, private medical or
-      financial details, etc.) if you are not comfortable with that content being included in an API request to
-      Anthropic under your account.
+      As implemented today, we <strong>do not store the full content of those AI requests in our application
+      database</strong>; they are processed to return a response to your browser. Like any HTTPS service, transient
+      processing, logs, or infrastructure retained by our hosting or Anthropic may still apply—see Anthropic’s
+      documentation for their retention and safety practices.
+    </p>
+    <p>
+      <strong>Avoid sending highly sensitive text</strong> (passwords, government IDs, confidential medical or
+      financial data, etc.) through translation or chat features if you are not comfortable with it being included in
+      requests to our API and Anthropic.
     </p>
 
-    <h3>3. Learning data (stored locally)</h3>
-    <p>The Extension may store, per learning language:</p>
+    <h3>3. Billing (Stripe)</h3>
+    <p>
+      Subscriptions are processed by <strong>Stripe</strong>. When you open checkout or the customer portal from the
+      Extension, you interact with Stripe-hosted pages. We receive webhook events and store the minimum subscription
+      metadata needed to know whether your account is active. Stripe’s handling of payment data is governed by
+      <a href="https://stripe.com/privacy" rel="noopener noreferrer">Stripe’s privacy policy</a>.
+    </p>
+
+    <h3>4. Settings and learning data (stored locally)</h3>
+    <p>Stored in <code>chrome.storage.local</code> on your device, including for example:</p>
     <ul>
-      <li><strong>Saved vocabulary items</strong> (e.g. translations, notes you chose to save)</li>
-      <li><strong>Daily practice</strong> suggestions and related metadata (e.g. recent prompts to reduce repetition)</li>
-      <li><strong>UI preferences</strong> (e.g. which sections you expanded in the popup)</li>
+      <li>Extension on/off, learning language, and other settings you configure in the popup</li>
+      <li>Your Lingquill session token and a short-lived cache of subscription status</li>
+      <li>Saved vocabulary, streaks, daily practice state, and similar learning data you generate in the Extension</li>
+      <li>Lightweight usage limits for certain features (e.g. caption-related quotas) where implemented</li>
+      <li>UI preferences (e.g. expanded sections in the popup)</li>
     </ul>
     <p>
-      This data remains on your device in Chrome storage unless you remove the Extension or clear site/extension data.
+      This local data remains on your device until you uninstall the Extension, sign out (which clears session data on
+      the device), or clear extension storage in Chrome.
     </p>
 
-    <h3>4. Clipboard (optional, on your action)</h3>
+    <h3>5. Clipboard (when you choose Copy)</h3>
     <p>
-      If you use <strong>Copy</strong> in the Extension UI, the Extension may write content to your
-      <strong>system clipboard</strong> using the browser’s clipboard APIs or a fallback copy method. That happens
-      <strong>locally</strong> on your device.
+      If you use <strong>Copy</strong> in the Extension UI, content may be written to your <strong>system
+      clipboard</strong> using the browser’s clipboard APIs or a fallback. That happens locally on your device.
     </p>
 
     <hr />
 
     <h2>Third-party services</h2>
-
-    <h3>Anthropic (Claude API)</h3>
-    <p>
-      The Extension sends requests to <strong>Anthropic</strong> at <code>api.anthropic.com</code> when you use features
-      that require AI output. Processing is governed by <strong>Anthropic’s</strong> terms and privacy policy. You provide
-      your own API key; usage and retention on Anthropic’s side depend on your Anthropic account and their documentation.
-    </p>
-
-    <h3>Websites you visit</h3>
-    <p>
-      The Extension includes <strong>content scripts</strong> that run on pages you browse so it can respond to text
-      selection. It <strong>does not</strong> change our access to your data—we do not run infrastructure that receives
-      your browsing data. Page content is processed <strong>in your browser</strong> except when <strong>you</strong>
-      trigger a feature that sends <strong>selected text</strong> to Anthropic as described above.
-    </p>
-
-    <hr />
-
-    <h2>Data retention and deletion</h2>
     <ul>
       <li>
-        Data stored by the Extension in <strong>Chrome local storage</strong> persists until you
-        <strong>uninstall</strong> the Extension, <strong>clear</strong> extension data, or use Chrome features that remove
-        that storage.
+        <strong>Google</strong> — OAuth sign-in and profile/email scopes as shown in the Extension’s permission
+        prompt.
       </li>
       <li>
-        To stop sending text to Anthropic, <strong>disable</strong> the Extension or <strong>remove</strong> your API key
-        in Settings.
+        <strong>Anthropic</strong> — AI responses for features that call Claude through our API.
+      </li>
+      <li>
+        <strong>Stripe</strong> — subscription checkout and customer billing portal.
+      </li>
+      <li>
+        <strong>Hosting providers</strong> — our API and database run on cloud infrastructure (for example, our
+        current deployment uses Railway and a managed database). Providers may process requests and metadata needed to
+        operate the service.
       </li>
     </ul>
 
     <hr />
 
+    <h2>Data retention and your choices</h2>
+    <ul>
+      <li>
+        <strong>On your device:</strong> clear Extension data or uninstall to remove locally stored vocabulary,
+        settings, and session tokens.
+      </li>
+      <li>
+        <strong>Sign out:</strong> use the Extension’s sign-out flow to clear the Lingquill session and cached
+        entitlement on the device and revoke cached Google tokens where possible.
+      </li>
+      <li>
+        <strong>Server-side account:</strong> to request deletion of the account and associated subscription records we
+        hold, email us at the contact above. We will need to verify your request (for example, from the email on the
+        account).
+      </li>
+      <li>
+        <strong>Stripe and Anthropic:</strong> data they hold under your payment or their AI processing is governed by
+        their policies and tools (e.g. Stripe customer portal).
+      </li>
+    </ul>
+
+    <hr />
+
+    <h2>Security</h2>
+    <p>
+      Session tokens are sent over HTTPS. You should keep your Google account secure; anyone with access to your
+      profile on the device could use the Extension while signed in.
+    </p>
+
+    <hr />
+
     <h2>Children’s privacy</h2>
     <p>
-      The Extension is not aimed at children under 13 (or the minimum age in your jurisdiction). Parents and guardians
-      decide whether minors should use it and should supervise browser use (including any API key stored on the device).
-    </p>
-    <p>
-      This Extension <strong>does not run a signup service or hosted accounts</strong>—there is no central database for
-      us to search or erase. To stop use or remove locally stored data, <strong>uninstall the Extension</strong> or
-      <strong>clear extension data</strong> in Chrome. If a minor’s text was sent to <strong>Anthropic</strong> using
-      your API key, that is handled under <strong>your</strong> Anthropic account and their policies, not by us.
+      Lingquill is not directed at children under 13 (or the minimum age required in your jurisdiction). The service
+      involves a Google account, optional paid subscription, and sending text to third-party AI systems—parents and
+      guardians should decide whether use by minors is appropriate and supervise browser and account access.
     </p>
 
     <hr />
 
     <h2>International users</h2>
     <p>
-      If you use the Extension from outside your home country, your information may be processed by
-      <strong>Anthropic</strong> in accordance with their policies and your use of their service.
+      If you use Lingquill from outside your home country, your information may be processed in the United States or
+      other regions where our providers operate, consistent with their terms and this policy.
     </p>
 
     <hr />
 
     <h2>Changes to this policy</h2>
     <p>
-      We may update this policy when the Extension changes. The <strong>“Last updated”</strong> date at the top will change
-      when we do. Continued use after changes means you accept the updated policy.
+      We may update this policy when the Extension or our API changes. The <strong>“Last updated”</strong> date at the
+      top will change when we do. Continued use after updates means you accept the revised policy.
     </p>
 
     <hr />
 
     <h2>Disclaimer</h2>
     <p>
-      This document is provided to help you describe the Extension’s behavior accurately. It is <strong>not</strong>
-      legal advice. For compliance questions, consult a qualified attorney.
+      This document is meant to describe how Lingquill works in plain language. It is <strong>not</strong> legal advice.
+      For compliance questions, consult a qualified attorney.
     </p>
   </body>
 </html>
